@@ -70,6 +70,7 @@ if __name__ == '__main__':
     mod = <set value>
     x = <set value>
 
+    # run algorithm
     curve = get_weier_strassen(a, b, mod)
     result = execute(curve(x), mod)
 
