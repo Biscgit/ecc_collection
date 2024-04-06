@@ -40,7 +40,7 @@ def execute(rhs: int, p: int) -> typing.Optional[tuple[int, int]]:
         while t % p != 1:
             # determine smallest i
             i = 1
-            while pow(t, pow(2, i, p), p) != 1:
+            while pow(t, pow(2, i), p) != 1:
                 i += 1
 
                 # check for point at 0
@@ -49,7 +49,7 @@ def execute(rhs: int, p: int) -> typing.Optional[tuple[int, int]]:
 
             # if not all values are int, no result is possible
             try:
-                d = pow(c, pow(2, m - i - 1, p), p)
+                d = pow(c, pow(2, m - i - 1), p)
 
             except TypeError:
                 return None
@@ -57,7 +57,7 @@ def execute(rhs: int, p: int) -> typing.Optional[tuple[int, int]]:
             # set common variables
             c = pow(d, 2, p)
             y = (y * d) % p
-            t = (t * pow(d, 2, p)) % p
+            t = (t * pow(d, 2)) % p
             m = i
 
         return y, (-y) % p
