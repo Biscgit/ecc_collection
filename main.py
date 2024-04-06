@@ -65,10 +65,10 @@ def execute(rhs: int, p: int) -> typing.Optional[tuple[int, int]]:
 
 if __name__ == '__main__':
     # define Weierstraß and searched x-value
-    a =
-    b =
-    mod =
-    x =
+    a = <set value>
+    b = <set value>
+    mod = <set value>
+    x = <set value>
 
     curve = get_weier_strassen(a, b, mod)
     result = execute(curve(x), mod)
