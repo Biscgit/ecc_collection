@@ -175,7 +175,7 @@ def run_lenstra(n: int, stdout=False) -> int | None:
         b = (pow(y, 2) - pow(x, 3) - a * x) % n
 
         try:
-            # guaranteed point on curve
+            # guaranteed point on the curve
             elliptic_curve = WeierStrassEC(a, b, n)
             start_point = Point(x, y, elliptic_curve)
 
