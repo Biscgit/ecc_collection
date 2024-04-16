@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import random
 
-# set number to be checked
+# set number to be factorized
 number = <set value>
 
 # adjust if too slow
