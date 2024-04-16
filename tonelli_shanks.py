@@ -1,4 +1,6 @@
-# Tonelli Shanks Algorithm
+# Tonelli Shanks Algorithm in Python
+# by David Horvát, 2024
+
 import random
 import typing
 
