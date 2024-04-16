@@ -151,7 +151,7 @@ class Point:
                     point = next_point
 
         # check points with [k!]G
-        for factorial in range(2, 10_000):
+        for factorial in range(2, max_factor):
             if lenstra_mul(factorial):
                 factor = math.gcd((point.x - next_point.x) % p, p)
 
@@ -167,7 +167,7 @@ def run_lenstra(n: int, stdout=False) -> int | None:
     if (n - 1) & 0b1:
         return 2
 
-    for i in range(1_000):
+    for i in range(max_iterations):
         # limit random number size
         x = random.randint(0, math.isqrt(n))
         y = random.randint(0, math.isqrt(n))
