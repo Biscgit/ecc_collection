@@ -9,7 +9,7 @@ import random
 number = <set value>
 
 # adjust if too slow
-max_iterations = 100
+max_iterations = 10
 max_factor = 1_000
 
 
@@ -185,14 +185,17 @@ def run_lenstra(n: int, stdout=False) -> int | None:
         if factor := start_point.lenstra():
             if stdout:
                 print(f"Found factors `p={factor}` and `q={n // factor}` for `{n=}`\n"
-                      f"using Weierstrass (`{a=}`, `{b=}`) and Point `({x=}, {y=})` "
-                      f"on {i + 1}-{dict({1: 'st', 2: 'nd', 3: 'rd'}).get(i + 1, 'th')} iteration.")
+                      f"using Weierstrass (`{a=}`, `{b=}`)\nand Point `({x=}, {y=})` "
+                      f"on {i + 1}-{dict({1: 'st', 2: 'nd', 3: 'rd'}).get(i + 1, 'th')} iteration.\n")
 
             return factor
 
 
 if __name__ == '__main__':
     print(f"---\nRunning Lenstra elliptic-curve factorization for `{number}` with max `{max_iterations}` iterations\n")
+    start_time = time.perf_counter()
 
     if run_lenstra(number, stdout=True) is None:
         print("No factors found!")
+
+    print(f"Factorization took {(time.perf_counter() - start_time) * 1e3:.2f}ms")
