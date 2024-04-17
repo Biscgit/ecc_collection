@@ -194,7 +194,8 @@ def run_lenstra(n: int, stdout=False) -> int | None:
             return factor
 
     if stdout:
-        print(f"No factors found! `{n=}` is probably prime.\n")
+        print(f"No factors found! `{n=}` is probably prime or consists of too large factors.\n"
+              f"Increase max iterations or factor if not.\n")
 
 
 if __name__ == '__main__':
