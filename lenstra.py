@@ -165,6 +165,9 @@ def run_lenstra(n: int, stdout=False) -> int | None:
 
     # filter even numbers
     if (n - 1) & 0b1:
+        if stdout:
+            print(f"`{n=}` is an even number and dividable by 2 (with `q={n // 2}`)")
+            
         return 2
 
     for i in range(max_iterations):
