@@ -4,9 +4,10 @@
 from __future__ import annotations
 import math
 import random
+import time
 
 # set number to be factorized
-number = <set value>
+number = <set number>
 
 # adjust if too slow
 max_iterations = 10
@@ -167,7 +168,6 @@ def run_lenstra(n: int, stdout=False) -> int | None:
     if (n - 1) & 0b1:
         if stdout:
             print(f"`{n=}` is an even number and dividable by 2 (with `q={n // 2}`)")
-            
         return 2
 
     for i in range(max_iterations):
@@ -188,17 +188,19 @@ def run_lenstra(n: int, stdout=False) -> int | None:
         if factor := start_point.lenstra():
             if stdout:
                 print(f"Found factors `p={factor}` and `q={n // factor}` for `{n=}`\n"
-                      f"using Weierstrass (`{a=}`, `{b=}`)\nand Point `({x=}, {y=})` "
+                      f"using Weierstrass (`{a=}`, `{b=}`)\nand Point `({x=}, {y=})`\n"
                       f"on {i + 1}-{dict({1: 'st', 2: 'nd', 3: 'rd'}).get(i + 1, 'th')} iteration.\n")
 
             return factor
+
+    if stdout:
+        print(f"No factors found! `{n=}` is probably prime.\n")
 
 
 if __name__ == '__main__':
     print(f"---\nRunning Lenstra elliptic-curve factorization for `{number}` with max `{max_iterations}` iterations\n")
     start_time = time.perf_counter()
 
-    if run_lenstra(number, stdout=True) is None:
-        print("No factors found!")
+    run_lenstra(number, stdout=True)
 
     print(f"Factorization took {(time.perf_counter() - start_time) * 1e3:.2f}ms")
