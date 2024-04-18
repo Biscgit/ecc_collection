@@ -83,6 +83,16 @@ class Point:
         y = (s * (self.x - x) - self.y) % curve.p
 
         return Point(x, y, curve)
+    
+    def __neg__(self) -> Point:
+        """Mirrors point"""
+
+        return Point(self.x, -self.y, self.curve)
+
+    def __sub__(self, other: Point) -> Point:
+        """Subtracts two points by adding the mirrored point"""
+
+        return self + (-other)
 
     def get_slope(self, other: Point) -> int:
         """Calculates the slope of adding two points/doubling.
