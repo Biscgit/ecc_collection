@@ -14,21 +14,19 @@ pub fn get_msb_position(number: i128) -> u8 {
     let (high, low): (u64, u64) = ((number.abs() >> 64) as u64, number.abs() as u64);
     let (msb_high, msb_low): (u32, u32);
 
-    unsafe {
-        asm!(
-        "bsr {result:r}, {input:r}",
-        result = lateout(reg) msb_high,
-        input = in(reg) high,
-        );
-    }
-
-    unsafe {
-        asm!(
-        "bsr {result:r}, {input:r}",
-        result = lateout(reg) msb_low,
-        input = in(reg) low,
-        );
-    }
+    let msb_asm = |num: u64| {
+        let msb : u32;
+        unsafe {
+            asm!(
+            "bsr {result:r}, {input:r}",
+            result = lateout(reg) msb,
+            input = in(reg) num,
+            );
+        }
+        return msb
+    };
+    msb_low = msb_asm(low);
+    msb_high = msb_asm(high);
 
     return match msb_high > 0 {
         true => { msb_high + 32 }
