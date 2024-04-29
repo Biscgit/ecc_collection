@@ -32,6 +32,10 @@ class WeierStrassEC:
     def __eq__(self, other: WeierStrassEC) -> bool:
         return self.a == other.a and self.b == other.b and self.p == other.p
 
+    def point(self, x: int, y: int | math.inf) -> Point:
+        """get point directly from the curve"""
+        return Point(x, y, self)
+
 
 class Point:
     """Defines a Point on an elliptic curve"""
