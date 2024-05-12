@@ -1,13 +1,16 @@
 # Schoof's algorithm and other helper algorithms in Python
 # by David Horvát, 2024
+
 import functools
 import math
 import typing
 import random
 from math import gcd
 
+import sympy
 
-def mod_sqrt(number: int, p: int) -> typing.Optional[int]:
+
+def mod_sqrt(number: int, p: int) -> int:
     """Uses the Tonelli-Shanks-Algorithm to find the modular square root of a given number"""
     s = (p - 1 & -(p - 1)).bit_length() - 1
     q = (p - 1) // pow(2, s)
@@ -34,11 +37,8 @@ def mod_sqrt(number: int, p: int) -> typing.Optional[int]:
                 if i > m:
                     return 0
 
-            try:
-                d = pow(c, pow(2, m - i - 1), p)
-
-            except TypeError:
-                return None
+            # raises TypeError if no square-root is possible
+            d = pow(c, pow(2, m - i - 1), p)
 
             c = pow(d, 2, p)
             y = (y * d) % p
@@ -76,12 +76,23 @@ def is_quadratic_residue(k: int, p: int) -> bool:
     return pow(k, (p - 1) // 2, p) == 1
 
 
+def f_m(m: int, a: int, b: int, x: int, y: int) -> int:
+    """function call interface for division polynomials"""
+    if m % 2 == 0:
+        return div_pol(m, a, b, x, y) // y
+    else:
+        return div_pol(m, a, b, x, y)
+
+
 @functools.cache
-def div_pol(order: int, a: int, b: int, x: int) -> int:
+def div_pol(order: int, a: int, b: int, x: int, y: int) -> int:
     """division polynomial using only x as parameter"""
 
-    if order <= 3:
+    if order in [0, 1]:
         return order
+
+    elif order == 2:
+        return 2 * y
 
     elif order == 3:
         return (
@@ -92,7 +103,7 @@ def div_pol(order: int, a: int, b: int, x: int) -> int:
         )
 
     elif order == 4:
-        return (4 * (
+        return (4 * y * (
                 pow(x, 6) +
                 5 * a * pow(x, 4) +
                 20 * b * pow(x, 3) -
@@ -104,15 +115,15 @@ def div_pol(order: int, a: int, b: int, x: int) -> int:
 
     m = order // 2
     if order % 2 == 0:
-        return div_pol(m, a, b, x) // 2 * (
-                div_pol(m + 2, a, b, x) * pow(div_pol(m - 1, a, b, x), 2) -
-                div_pol(m - 2, a, b, x) * pow(div_pol(m + 1, a, b, x), 2)
+        return div_pol(m, a, b, x, y) // (2 * y) * (
+                div_pol(m + 2, a, b, x, y) * pow(div_pol(m - 1, a, b, x, y), 2) -
+                div_pol(m - 2, a, b, x, y) * pow(div_pol(m + 1, a, b, x, y), 2)
         )
 
     else:
         return (
-                div_pol(m + 2, a, b, x) * pow(div_pol(m, a, b, x), 3) -
-                div_pol(m - 1, a, b, x) * pow(div_pol(m + 1, a, b, x), 3)
+                div_pol(m + 2, a, b, x, y) * pow(div_pol(m, a, b, x, y), 3) -
+                div_pol(m - 1, a, b, x, y) * pow(div_pol(m + 1, a, b, x, y), 3)
         )
 
 
