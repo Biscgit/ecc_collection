@@ -128,7 +128,13 @@ def div_pol(order: int, a: int, b: int, x: int, y: int) -> int:
 
 
 if __name__ == '__main__':
-    # define your curve parameters
-    a = 0
-    b = 0
-    q = 0
+    # define your curve parameters with E: y² = x³ + ax + b and q = p^b
+    q = 19
+    a = 11
+    b = 5
+
+    primes = get_primes_list(q)
+    t = dict()
+
+    x = sympy.symbols('x')
+    t[2] = 1 if sympy.gcd(pow(x, q) - x, pow(x, 3) + a * x + b) == 1 else 0
