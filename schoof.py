@@ -80,48 +80,40 @@ def is_quadratic_residue(k: int, p: int) -> bool:
 def div_pol(order: int, a: int, b: int, x: int) -> int:
     """division polynomial using only x as parameter"""
 
-    match abs(order):
-        # pre-defined equations
-        case 0:
-            return 0
-        case 1:
-            return 1
-        case 2:
-            return 2
-        case 3:
-            return (
-                    3 * pow(x, 4) +
-                    6 * a * pow(x, 2) +
-                    12 * b * x -
-                    pow(a, 2)
-            )
-        case 4:
-            return (4 * (
-                    pow(x, 6) +
-                    5 * a * pow(x, 4) +
-                    20 * b * pow(x, 3) -
-                    5 * pow(a, 2) * pow(x, 2) -
-                    4 * a * b * x -
-                    8 * pow(b, 2) -
-                    pow(a, 3)
-            ))
+    if order <= 3:
+        return order
 
-        # break into smaller problems
-        case _:
-            m = order // 2
-            if order % 2 == 0:
-                return int(
-                    div_pol(m, a, b, x) / 2 * (
-                            div_pol(m + 2, a, b, x) * pow(div_pol(m - 1, a, b, x), 2) -
-                            div_pol(m - 2, a, b, x) * pow(div_pol(m + 1, a, b, x), 2)
-                    )
-                )
+    elif order == 3:
+        return (
+                3 * pow(x, 4) +
+                6 * a * pow(x, 2) +
+                12 * b * x -
+                pow(a, 2)
+        )
 
-            else:
-                return int(
-                    div_pol(m + 2, a, b, x) * pow(div_pol(m, a, b, x), 3) -
-                    div_pol(m - 1, a, b, x) * pow(div_pol(m + 1, a, b, x), 3)
-                )
+    elif order == 4:
+        return (4 * (
+                pow(x, 6) +
+                5 * a * pow(x, 4) +
+                20 * b * pow(x, 3) -
+                5 * pow(a, 2) * pow(x, 2) -
+                4 * a * b * x -
+                8 * pow(b, 2) -
+                pow(a, 3)
+        ))
+
+    m = order // 2
+    if order % 2 == 0:
+        return div_pol(m, a, b, x) // 2 * (
+                div_pol(m + 2, a, b, x) * pow(div_pol(m - 1, a, b, x), 2) -
+                div_pol(m - 2, a, b, x) * pow(div_pol(m + 1, a, b, x), 2)
+        )
+
+    else:
+        return (
+                div_pol(m + 2, a, b, x) * pow(div_pol(m, a, b, x), 3) -
+                div_pol(m - 1, a, b, x) * pow(div_pol(m + 1, a, b, x), 3)
+        )
 
 
 if __name__ == '__main__':
